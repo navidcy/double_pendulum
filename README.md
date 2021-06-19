@@ -15,7 +15,7 @@ Then clone the repository, e.g.,
 git clone https://github.com/navidcy/double_pendulum.git
 ```
 
-Enter the directory you've cloned the repository, e.g., 
+Enter the directory you've cloned the repository in, e.g., 
 
 ```
 cd double_pendulum
@@ -30,13 +30,13 @@ julia --project= -e 'using Pkg; Pkg.instantiate()'
 to download all required dependencies. Afterwards, run
 
 ```
-$ julia --project double_pendulum_logo.jl
+julia --project double_pendulum_logo.jl
 ```
 
 to produce the logo above or 
 
 ```
-$ julia --project double_pendulum.jl
+julia --project double_pendulum.jl
 ```
 
 to produce a series of animations demonstrating the normal modes of the double pendulum without forcing nor dissipation and how we can excite these normal modes in the presence of forcing and dissipation.
