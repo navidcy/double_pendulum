@@ -60,7 +60,7 @@ function make_a_movie(θ₁₀ = 0.25, ω₁₀ = 0.2, θ₂₀ = 0.0, ω₂₀ 
                              yticks = :none,
                         aspectratio = 1,
                               xlims = (-2.2, 2.2),
-                              ylims = (-2.2, 2.2))
+                              ylims = (-2.2, 1.4))
             
         plot!(p1, [0], [0],
               shape = :square, markersize = 5, color = :black, legend = :none)
@@ -69,7 +69,7 @@ function make_a_movie(θ₁₀ = 0.25, ω₁₀ = 0.2, θ₂₀ = 0.0, ω₂₀ 
         plot!(p1, [x₂], [y₂],
               shape = :hex, markersize = 10, color = :blue, legend = :none)
         
-        plot(p1, dpi=dpi)
+        plot(p1, size=(500, 500), dpi=dpi)
     end
 
     gif(anim, filename, fps=fps)
@@ -94,4 +94,4 @@ filename = "logo.gif"
 make_a_movie(θ₁₀, ω₁₀, θ₂₀, ω₂₀;
              ℓ₁ = ℓ₁, ℓ₂ = ℓ₂,
              tfinal = tfinal, dt=dt, Δt=Δt,
-             filename = filename, fps=36)
+             filename = filename, fps=36, dpi=150)
