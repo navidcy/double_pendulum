@@ -59,8 +59,8 @@ function make_a_movie(θ₁₀ = 0.25, ω₁₀ = 0.2, θ₂₀ = 0.0, ω₂₀ 
                              xticks = :none,
                              yticks = :none,
                         aspectratio = 1,
-                              xlims = (-2.2, 2.2),
-                              ylims = (-2.2, 1.4))
+                              xlims = (-2.1, 2.1),
+                              ylims = (-2.1, 1.3))
             
         plot!(p1, [0], [0],
               shape = :square, markersize = 5, color = :black, legend = :none)
@@ -69,7 +69,7 @@ function make_a_movie(θ₁₀ = 0.25, ω₁₀ = 0.2, θ₂₀ = 0.0, ω₂₀ 
         plot!(p1, [x₂], [y₂],
               shape = :hex, markersize = 10, color = :blue, legend = :none)
         
-        plot(p1, size=(500, 500), dpi=dpi)
+        plot(p1, size=(420, 360), dpi=dpi)
     end
 
     gif(anim, filename, fps=fps)
@@ -78,7 +78,7 @@ end
 # Now make movies
 
 # First, no damping, no forcing
-tfinal = 50
+tfinal = 80
 Δt = 0.025   # time between snapshots in animations
 dt = 0.005   # actual dt for time-integration
 
