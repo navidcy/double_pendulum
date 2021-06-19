@@ -18,5 +18,5 @@ docs/build/
 docs/site/
 
 # Movies
-.mp4
-.gif
+*.mp4
+*.gif
