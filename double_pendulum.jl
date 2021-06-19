@@ -3,47 +3,7 @@ using Plots
 
 ENV["GKSwstype"] = "100"
 
-"""
-    double_pendulum(u, params, t)
-    
-```math
-\\begin{aligned}
-    θ̇₁ &= ω₁ \\\\
-    ω̇₁ &= [m₂ ℓ₁ ω₁² \\sin Δθ \\cos Δθ + m₂ g \\sin θ₂ \\cos Δθ +
-       m₂ ℓ₂ ω₂² \\sin Δθ - (m₁ + m₂) g \\sin θ₁] / (ℓ₁ Δ) - γ ω₁ + forcing \\\\
-    θ̇₂ &= ω₂ \\\\
-    ω̇₂ &= [-m₂ ℓ₂ ω₂² \\sin Δθ \\cos Δθ + (m₁ + m₂) g \\sin θ₁ \\cos Δθ -
-             (m₁ + m₂) ℓ₁ ω₁² \\sin Δθ - (m₁ + m₂) g \\sin Θ₂] / (ℓ₂ Δ) - γ ω₂
-\\end{aligned}
-```
-where ``Δθ = θ₂ - θ₁`` and ``D = (m₁ + m₂) - m₂ \\cos² Δθ``.
-"""
-function double_pendulum(u, params, t)
-    # unpack parameters and state vector
-    g, ℓ₁, ℓ₂, m₁, m₂, γ, forcing = params
-    θ₁, ω₁, θ₂, ω₂ = u
-    
-    # some definitions
-    Δθ = θ₂ - θ₁
-    D = (m₁ + m₂) - m₂ * cos(Δθ)^2
-    
-    # equations of motion
-    dθ₁ = ω₁
-    
-    dω₁ = (m₂ * ℓ₁ * ω₁^2 * sin(Δθ) * cos(Δθ) +
-               m₂ * g * sin(θ₂) * cos(Δθ) +
-               m₂ * ℓ₂ * ω₂^2 * sin(Δθ) -
-               (m₁ + m₂) * g * sin(θ₁)) / (ℓ₁ * D) - γ * ω₁ + forcing(t)
-    
-    dθ₂ = ω₂
-    
-    dω₂ = (-m₂ * ℓ₂ * ω₂^2 * sin(Δθ) * cos(Δθ) +
-               (m₁ + m₂) * g * sin(θ₁) * cos(Δθ) -
-               (m₁ + m₂) * ℓ₁ * ω₁^2 * sin(Δθ) -
-               (m₁ + m₂) * g * sin(θ₂)) / (ℓ₂ * D) - γ * ω₂
-    
-    return SVector{4}(dθ₁, dω₁, dθ₂, dω₂)
-end
+include("double_pendulum_eom.jl")
 
 noforcing(t) = 0
 
@@ -59,11 +19,11 @@ function make_a_movie(θ₁₀ = 0.25, ω₁₀ = 0.2, θ₂₀ = 0.0, ω₂₀ 
     t = 0:dt:tfinal
     
     params = (g, ℓ₁, ℓ₂, m₁, m₂, γ, forcing)
-    u₀ = (θ₁₀, ω₁₀, θ₂₀, ω₂₀)
+    u₀ = [θ₁₀, ω₁₀, θ₂₀, ω₂₀]
     
     ds = ContinuousDynamicalSystem(double_pendulum, u₀, params)
 
-    solution = trajectory(ds, tfinal, (θ₁₀, ω₁₀, θ₂₀, ω₂₀), dt=dt)
+    solution = trajectory(ds, tfinal, u₀, dt=dt)
 
     θ₁_full = solution[:, 1]
     θ₂_full = solution[:, 3]
@@ -71,9 +31,9 @@ function make_a_movie(θ₁₀ = 0.25, ω₁₀ = 0.2, θ₂₀ = 0.0, ω₂₀ 
     global θ₁, ω₁, θ₂, ω₂ = θ₁₀, ω₁₀, θ₂₀, ω₂₀
     
     anim = @animate for j in 0:Int(tfinal/Δt)
-        local u = (θ₁, ω₁, θ₂, ω₂)
+        local u = [θ₁, ω₁, θ₂, ω₂]
         
-        time = j*Δt
+        time = j * Δt
         
         local ds = ContinuousDynamicalSystem(double_pendulum, u, params; t0=time)
         
