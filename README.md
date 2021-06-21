@@ -1,6 +1,6 @@
 # Double Pendulum
 
-Julia scripts to make double pendulum animations. Dynamics include damping and forcing.
+Julia scripts to make double pendulum animations. Dynamics include damping and forcing. The scripts build upon the functionality of [`DynamicalSystems.jl`](http://github.com/JuliaDynamics/DynamicalSystems.jl) package.
 
 ![logo](https://user-images.githubusercontent.com/7112768/122657073-866b8580-d1a3-11eb-88cc-27189a85d37c.gif)
 
